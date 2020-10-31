@@ -1,0 +1,59 @@
+*heading
+ e001/case-1
+*preprint, echo=yes, model=yes, history=yes
+**------------------------------------------------
+*node, nset=alln
+ 1,  0.,   0.
+ 2, 25.,   0.
+ 3, 25., 100.
+ 4,  0., 100.
+*element, type=cax4r, elset=alle
+ 1, 1, 2, 3, 4
+*elset, elset=outele
+ 1
+*nset, nset=outnod
+ 1
+*nset, nset=fixnody
+ 1, 2
+*nset, nset=fixnodx
+ 1, 4
+*nset, nset=tnod
+ 3
+*nset, nset=rnod
+ 4
+*nset, nset=loadnod
+ rnod
+**------------------------------------------------
+*solid section, elset=alle, material=mat1
+**------------------------------------------------
+*equation
+ 2
+ tnod, 2, 1.,  rnod, 2, -1.
+**------------------------------------------------
+*material, name=mat1
+*elastic
+ 210000., 0.3
+**------------------------------------------------
+*boundary
+ fixnodx, 1
+ fixnody, 2
+**------------------------------------------------ step-1 --
+*step
+*static
+ 1., 1.
+**------------------------------------------------
+*cload
+ loadnod, 2, 3.e+5
+**------------------------------------------------
+** output requests
+*output, field
+*element output
+ s, e
+*node output
+ u
+*output, history
+*node output, nset=outnod
+ u
+*el print
+*node print
+*end step

@@ -1,0 +1,50 @@
+*heading
+ e020/case-1
+*preprint, echo=yes, model=yes, history=yes
+**------------------------------------------------
+*include, input=job1.node
+*include, input=job1.elem
+**
+*nset, nset=fixnod, generate
+ 1, 493, 41
+*nset, nset=loadnod
+ 287
+*nset, nset=obsnod, generate, unsorted
+ 21, 513, 41
+*elset, elset=outele
+ 1
+**------------------------------------------------
+*solid section, elset=alle, material=mat1
+ 10.
+**------------------------------------------------
+*material, name=mat1
+*elastic
+ 200000.
+**------------------------------------------------
+*boundary
+ fixnod, 1, 2, 0.
+**------------------------------------------------ step-1 --
+*step
+*static
+ 1., 1.
+**----------------------------
+*cload
+ loadnod, 2, -10000.
+**----------------------------
+*output, field, variable=preselect
+*output, history
+*element output, elset=outele
+ s, e
+*node output, nset=loadnod
+ u, cf
+*node output, nset=obsnod
+ u
+*el print, elset=outele
+ s, e
+*node print, nset=loadnod
+ u, rf
+*node print, nset=obsnod
+ u, rf
+ coord
+*end step
+

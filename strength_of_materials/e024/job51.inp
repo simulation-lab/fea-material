@@ -1,0 +1,51 @@
+*heading
+ e024/case-5.1
+*preprint, echo=yes, model=yes, history=yes
+**------------------------------------------------
+*include, input=job51.node
+*include, input=job51.elem
+**
+*node, nset=refnod_top
+ 1001, 0., 1000., 0.
+*node, nset=refnod_bot
+ 1002, 0., 0., 0. 
+**
+*nset, nset=tnod_top, generate
+ 751, 755, 1
+*nset, nset=tnod_bot, generate
+ 1, 5, 1
+*elset, elset=outele
+ 1
+**------------------------------------------------
+*solid section, elset=alle, material=mat1
+ 25.
+**------------------------------------------------
+*material, name=mat1
+*elastic
+ 203000., 0.3
+*plastic
+ 310., 0.
+*density
+ 7.86e-5
+**------------------------------------------------
+*boundary
+ refnod_top, 1, 1, 0.
+ refnod_bot, 1, 2, 0.
+**------------------------------------------------
+*rigid body, tie nset=tnod_top, ref node=refnod_top
+*rigid body, tie nset=tnod_bot, ref node=refnod_bot
+**------------------------------------------------ step-1 --
+*step
+*buckle
+ 10
+*dload
+ alle, grav, 1.,  0., -1., 0. 
+*boundary, op=mod
+ refnod_top, 2, 2, -1.
+**----------------------------
+*node file
+ u
+*output, field, variable=preselect
+*el print
+*node print
+*end step

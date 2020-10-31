@@ -1,0 +1,62 @@
+*heading
+ e025/case-1
+*preprint, echo=yes, model=yes, history=yes
+**------------------------------------------------
+*node, nset=alln
+ 1,  0.,     0., 0.
+ 2,  0., -1000., 0.
+*nset, nset=topnod
+ 1
+*nset, nset=botnod
+ 2
+*element, type=t3d2, elset=e_truss
+ 1,  1, 2
+**------------------------------------------------
+*solid section, elset=e_truss, material=mat1
+ 20.
+**------------------------------------------------
+*material, name=mat1
+*elastic
+ 200000., 0.3
+*density
+ 1.e-10
+**------------------------------------------------
+*element, type=mass, elset=e_mass
+ 1001, 2
+*mass, elset=e_mass
+ 8.163e-3
+**------------------------------------------------
+*boundary
+ topnod, 1, 3
+ botnod, 1
+ botnod, 3
+**------------------------------------------------
+** initial verocity
+** v=(2*G*h)**0.5
+**  =(2*9800*100)**0.5
+**  =1400.[mm/sec]
+**
+*initial conditions, type=velocity
+ botnod, 2, -1400.,
+**------------------------------------------------ step-1 --
+*step
+*dynamic, direct, nohaf
+ 1.e-4, 0.01,
+**----------------------------
+*cload
+ botnod, 2, -80.
+**----------------------------
+*output, field, variable=preselect, freq=1
+*output, history, freq=1
+*element output, elset=e_truss
+ s, e
+*node output, nset=alln
+ u, rf
+*el print, elset=e_truss
+ s
+ e
+*node print, nset=alln
+ u
+ rf
+*end step
+

@@ -1,0 +1,97 @@
+*heading
+ e011/case-1
+*preprint, echo=yes, model=yes, history=yes
+**------------------------------------------------
+*include, input=job1.node
+*include, input=job1.elem
+**
+*elset, elset=outele
+ 1
+*nset, nset=fixnod1
+ 1
+*nset, nset=fixnod2
+ 41,
+*nset, nset=center_nod
+ 21
+**------------------------------------------------
+*beam section, section=circ, elset=alle, material=mat1
+ 1.
+ 0., 0., -1.
+**------------------------------------------------
+*material, name=mat1
+*elastic
+ 125000., 0.
+*density
+ 8.827e-9
+**------------------------------------------------
+*boundary
+ fixnod1, 1, 2, 0.
+ fixnod2, 1, 2, 0.
+**------------------------------------------------ step-1 --
+*step, nlgeom
+*static
+  , 1.
+**----------------------------
+*dload
+ alle, grav, -9.8e-4, 0., 1.
+**----------------------------
+*output, field
+*element output
+ s, e, sf
+*node output
+ u, rf
+*output, history
+*element output, elset=outele
+ s, e
+*node output, nset=fixnod2
+ rf
+*node output, nset=center_nod
+ u
+*el print, elset=outele
+ s, e
+*node print, total=yes
+ rf
+*node print, nset=center_nod
+ u
+**----------------------------
+*end step
+**
+**------------------------------------------------ step-2 --
+*step, nlgeom
+*static
+  , 1.
+**----------------------------
+*dload
+ alle, grav, -9.8e-1, 0., 1.
+**----------------------------
+*end step
+**
+**------------------------------------------------ step-3 --
+*step, nlgeom
+*static
+  , 1.
+**----------------------------
+*dload
+ alle, grav, -9.8e+1, 0., 1.
+**----------------------------
+*end step
+**
+**------------------------------------------------ step-4 --
+*step, nlgeom
+*static
+  , 1.
+**----------------------------
+*dload
+ alle, grav, -9.8e+3, 0., 1.
+**----------------------------
+*end step
+**
+**------------------------------------------------ step-5 --
+*step, nlgeom
+*static
+  , 1.
+**----------------------------
+*boundary, op=mod
+ fixnod2, 1, 1, -27.
+**----------------------------
+*end step

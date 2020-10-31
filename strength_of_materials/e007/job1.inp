@@ -1,0 +1,51 @@
+*heading
+ e007/case-1
+*preprint, echo=yes, model=yes, history=yes
+**------------------------------------------------
+*include, input=job1.node
+*include, input=job1.elem
+**
+*elset, elset=outele
+ 1
+*nset, nset=fixnodx
+ 1, 2
+*nset, nset=fixnody
+ 1
+**------------------------------------------------
+*solid section, elset=alle, material=mat1
+ 10.
+**------------------------------------------------
+*material, name=mat1
+*elastic
+ 70000., 0.
+*density
+ 2.8469e-9
+**------------------------------------------------
+*boundary
+ fixnodx, 1
+ fixnody, 2
+**------------------------------------------------ step-1 --
+*step
+*static
+**----------------------------
+*dload
+ alle, centrif, 1.9344e+3, 0., 0., 0., 0., 1., 0.
+**----------------------------
+**output requests
+**
+*output, field
+*element output
+ s, e
+*node output
+ u, rf
+*output, history
+*element output, elset=outele
+ s, e
+*node output, nset=fixnodx
+ rf
+*el print, elset=outele
+ s, e
+*node print, nset=fixnodx
+ rf
+*end step
+

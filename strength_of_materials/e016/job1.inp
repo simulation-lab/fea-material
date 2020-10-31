@@ -1,0 +1,58 @@
+*heading
+ e016/case-1
+*preprint, echo=yes, model=yes, history=yes
+**------------------------------------------------
+*include, input=job1.node
+*include, input=job1.elem
+**
+*nset, nset=fixnod
+ 101, 202
+*nset, nset=tnod
+ 102
+*nset, nset=rnod
+ 1
+*elset, elset=outele
+ 1
+**------------------------------------------------
+*shell section, nodal thickness, elset=alle, material=mat1
+*nodal thickness, input=job1.thickness
+**------------------------------------------------
+*material, name=mat1
+*elastic
+ 200000.
+**------------------------------------------------
+*equation
+ 2
+ tnod, 2, 1.,  rnod, 2, -1.
+**------------------------------------------------
+*boundary
+ fixnod, encastre
+**------------------------------------------------ step-1 --
+*step
+*static
+ 1., 1.
+**----------------------------
+*cload
+ rnod, 2, -10.
+**----------------------------
+*output, field
+*element output, elset=outele
+ s, e, sth
+*node output, nset=rnod
+ u, cf
+**
+*output, history
+*element output, elset=outele
+ s, e, sth
+*node output, nset=rnod
+ u, cf
+**
+*el print, elset=outele
+ s
+ e
+ sth
+*node print, nset=rnod
+ u
+ rf
+*end step
+

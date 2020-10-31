@@ -1,0 +1,4 @@
+*heading
+ test
+*include, input=job4.node
+*include, input=job4.elem

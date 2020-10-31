@@ -1,0 +1,46 @@
+*heading
+ e023/case-1
+*preprint, echo=yes, model=yes, history=yes
+**------------------------------------------------
+*node, nset=alln
+ 1,  0., 0.
+ 2, 50., 0.
+*element, type=b31, elset=alle
+ 1, 1, 2
+*nset, nset=fixnod
+ 1
+*nset, nset=rotnod
+ 2
+*elset, elset=outele
+ 1
+**------------------------------------------------
+*beam general section, section=general, elset=alle
+ 50.265, 201.06, , 201.06, 402.12
+ 0., 0., -1.
+ 213200., 82000.
+**------------------------------------------------
+*boundary
+ fixnod, encastre
+ rotnod, 1, 3, 0.
+ rotnod ,5, 6, 0.
+**------------------------------------------------ step-1 --
+*step
+*static
+ 1., 1.
+**----------------------------
+** torque=1.[N/mm]
+*cload
+ rotnod, 4, 1.
+**----------------------------
+*output, field, variable=preselect
+*output, history
+*element output, elset=outele
+ sf
+*node output, nset=rotnod
+ u, rf
+*el print, elset=outele
+ sf
+*node print, nset=rotnod
+ u
+*end step
+

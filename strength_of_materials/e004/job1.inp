@@ -1,0 +1,58 @@
+*heading
+ e004/case-1
+*preprint, echo=yes, model=yes, history=yes
+**------------------------------------------------
+*node, nset=alln
+    1, 0.00000E+0, 0.00000E+0
+    2, 8.66025E+1,-5.00000E+1
+    3, 1.73205E+2, 0.00000E+0
+*element, type=t2d2, elset=alle
+    1, 1, 2
+    2, 2, 3
+**
+*nset, nset=fixnod
+ 1, 3
+*nset, nset=loadnod
+ 2
+**------------------------------------------------
+*solid section, elset=alle, material=mat1
+ 10.
+**------------------------------------------------
+*material, name=mat1
+*elastic
+ 200000., 0.3
+*boundary
+ fixnod,    1, 2, 0.
+ loadnod,  1
+**------------------------------------------------ step-1 --
+*step
+*static
+**
+*cload
+ loadnod, 2, -10000.
+**--------------------------------------
+**output requests
+**
+**------------------
+*output, field
+*element output
+ s, e
+*node output
+ u, rf
+**------------------
+*output, history
+*element output, elset=alle
+ s, e
+*node output, nset=loadnod
+ u
+*node output, nset=fixnod
+ rf
+**------------------
+*el print
+ s, e
+*node print, nset=loadnod
+ u
+*node print, nset=fixnod
+ rf
+*end step
+

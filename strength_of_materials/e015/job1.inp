@@ -1,0 +1,47 @@
+*heading
+ e015/case-1
+*preprint, echo=yes, model=yes, history=yes
+**------------------------------------------------
+*include, input=job1.node
+*include, input=job1.elem
+**
+*nset, nset=fixnod
+ 1, 51
+*nset, nset=centernod
+ 26
+*elset, elset=outele
+ 1
+**------------------------------------------------
+*beam section, section=rect, elset=alle, material=mat1
+ 10., 10.
+ 0., 0., -1.
+**------------------------------------------------
+*material, name=mat1
+*elastic
+ 200000.
+**------------------------------------------------
+*boundary
+ fixnod, 1, 2, 0.
+**------------------------------------------------
+*step
+*static
+ 1., 1.
+**------------------------------------------------
+*dload
+ alle, py, -0.2
+**------------------------------------------------
+*output, field, variable=preselect
+*output, history
+*element output, elset=outele
+ sf, e
+*node output, nset=alln
+ u, cf
+*el print, elset=outele
+ sf
+ e
+*node print, nset=centernod
+ u
+*node print, total=yes
+ rf
+*end step
+

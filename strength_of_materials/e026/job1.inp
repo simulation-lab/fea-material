@@ -1,0 +1,67 @@
+*heading
+ e026/case-1
+*preprint, echo=yes, model=yes, history=yes
+**------------------------------------------------
+*include, input=job1.node 
+*include, input=job1.elem
+**
+*nset, nset=fixnod
+ 1, 41
+*nset, nset=centernod
+ 21
+*nset, nset=loadnod
+ 1001
+*elset, elset=e_center
+ 20, 21
+**------------------------------------------------
+*node
+ 1001, 100., 10., 0.
+*element, type=gapuni, elset=e_gap
+ 1001, 21, 1001 
+*gap, elset=e_gap
+ 0.,  0., 1., 0.
+**------------------------------------------------
+*element, type=mass, elset=e_mass
+ 2001, 1001
+*mass, elset=e_mass
+ 3.e-5
+**------------------------------------------------
+*beam section, section=rect, elset=e_beam, material=mat1
+ 10., 10.
+ 0., 1., 0.
+**------------------------------------------------
+*material, name=mat1
+*elastic
+ 200000., 0.
+*density
+ 1.e-14
+**------------------------------------------------
+*boundary
+ fixnod, pinned
+ loadnod, 1
+ loadnod, 3
+**------------------------------------------------
+*initial conditions, type=velocity
+ loadnod, 2, -9.8995e+2
+**------------------------------------------------
+*step, inc=1000
+*dynamic, direct, nohaf
+ 2.e-6, 1.e-3
+**------------------------------------------------
+** m*g = 3.e-5 * 9800. = 0.294
+*cload
+ loadnod, 2, -0.294
+**------------------------------------------------
+*output, field, variable=preselect
+*output, history
+*element output, elset=e_center
+ sm2
+*node output, nset=centernod
+ u, rf
+*el print, elset=e_center
+ s
+ e
+*node print, nset=centernod
+ u
+ rf
+*end step

@@ -1,0 +1,64 @@
+*heading
+ e028/case-1 plane-stress
+*preprint, echo=yes, model=yes, history=yes
+**------------------------------------------------
+*node, nset=alln
+ 1, 0., 0.
+ 2, 1., 0.
+ 3, 1., 1.
+ 4, 0., 1.
+*nset, nset=n_corn1
+ 1
+*nset, nset=n_corn2
+ 2
+*nset, nset=n_edge12
+ 1, 2
+*nset, nset=n_edge23
+ 2, 3
+*nset, nset=n_edge34
+ 3, 4
+*nset, nset=n_edge41
+ 4, 1
+**------------------------------------------------
+*element, type=cps4, elset=alle
+ 1,  1, 2, 3, 4
+**------------------------------------------------
+*solid section, elset=alle, material=mat1
+ 1.
+**------------------------------------------------
+*material, name=mat1
+*elastic
+ 200000., 0.3
+**------------------------------------------------
+*boundary
+ n_corn1, 1, 2, 0.
+ n_corn2, 2
+**------------------------------------------------ step-1 --
+*step
+*static
+ 1., 1.
+**----------------------------
+*cload
+** sigma11 -------------------
+ n_edge23, 1,  60.
+ n_edge41, 1, -60. 
+** sigma22 -------------------
+ n_edge12, 2,  25. 
+ n_edge34, 2, -25.
+** tau21 ---------------------
+ n_edge12, 1, -30.
+ n_edge34, 1,  30.
+** tau12 ---------------------
+ n_edge23, 2,  30.
+ n_edge41, 2, -30.
+**----------------------------
+*output, field, variable=preselect
+*output, history
+*element output, elset=alle
+ s, e
+*el print, elset=alle
+ s, e
+*node print
+ u, rf
+*end step
+

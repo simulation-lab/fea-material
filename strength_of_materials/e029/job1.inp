@@ -1,0 +1,83 @@
+*heading
+ e029/e001
+*preprint, echo=yes, model=yes, history=yes
+**------------------------------------------------
+*include, input=job1.node
+*include, input=job1.elem
+*nset, nset=n_cyl1, generate
+ 1, 22, 1
+*nset, nset=n_cyl2, generate
+ 23, 44, 1
+*nset, nset=fixnod_y, generate
+  1, 11, 1
+ 23, 33, 1
+*nset, nset=outnod
+ 1 
+*elset, elset=cyl1, generate
+ 1, 10, 1
+*elset, elset=cyl2, generate
+ 11, 20, 1
+*elset, elset=cyl1out
+ 10
+*elset, elset=cyl2in
+ 11
+*elset, elset=outele
+ 1
+**------------------------------------------------
+*solid section, elset=alle, material=mat1
+**------------------------------------------------
+*material, name=mat1
+*elastic
+ 200000.
+*expansion
+ 1.e-5
+**------------------------------------------------
+*surface, name=s_cyl2in
+ cyl2in, s1
+*surface, name=s_cyl1out
+ cyl1out, s3
+*contact pair, interaction=cont
+ s_cyl1out, s_cyl2in
+*surface interaction, name=cont
+**------------------------------------------------
+*boundary, op=new
+ fixnod_y, 2
+**------------------------------------------------
+*initial conditions, type=temperature
+ n_cyl1, 0.
+ n_cyl2, 0.
+**------------------------------------------------ step-1 --
+*step
+*static
+ 1., 1.
+**------------------------------------------------
+*temperature, op=new
+ n_cyl1, 0.
+ n_cyl2, 100.
+**------------------------------------------------
+*contact print
+**
+*output, field, variable=preselect
+*contact output
+*node output
+ nt
+*output, history
+*element output, elset=outele
+ s, e
+*node output, nset=outnod
+ nt, u
+*el print, elset=outele
+ s, e
+*node print, nset=outnod
+ nt, u, rf, cf
+*end step
+**------------------------------------------------ step-2 --
+*step
+*static
+ 1., 1.
+**----------------------------
+*temperature, op=new
+ n_cyl1, 0.
+ n_cyl2, 0.
+*end step
+

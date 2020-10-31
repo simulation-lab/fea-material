@@ -1,0 +1,54 @@
+*heading
+ e010/case-1
+*preprint, echo=yes, model=yes, history=yes
+**------------------------------------------------
+*node, nset=alln
+ 1, 0.00000E+0, 0.00000E+0
+ 2, 1.00000E+3, 0.00000E+0
+*element, type=t2d2, elset=alle
+ 1, 1, 2
+*elset, elset=outele
+ 1
+*nset, nset=fixnodxy
+ 1, 2
+**------------------------------------------------
+*solid section, elset=alle, material=mat1
+ 200.
+**------------------------------------------------
+*material, name=mat1
+*elastic
+ 210000., 0.
+*expansion
+ 1.2e-5
+**------------------------------------------------
+*boundary
+ fixnodxy, 1, 2, 0.
+**------------------------------------------------
+*initial conditions, type=temperature
+ alln, -10.
+**------------------------------------------------ step-1 --
+*step
+*static
+ 1., 1.
+**----------------------------
+*temperature
+ alln, 40.
+**------------------------------------------------
+** output requests
+**
+*output, field
+*element output
+ s, e
+*node output
+ u, rf, nt
+*output, history
+*element output, elset=outele
+ s, e
+*node output, nset=fixnodxy
+ rf
+*el print, elset=outele
+ s, e
+*node print, nset=fixnodxy
+ u, rf, nt
+*end step
+

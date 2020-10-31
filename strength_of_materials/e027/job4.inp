@@ -1,0 +1,63 @@
+*heading
+ e027/case-2.2 type:CPE4
+*preprint, echo=yes, model=yes, history=yes
+**------------------------------------------------
+*include, input=job4.node
+*include, input=job4.elem
+**
+*nset, nset=fixnod_x
+   5,   6,  44,  45,  46,  47,  48,  49,  50,  51,  52,  53,  54, 308, 311, 313
+ 315, 317, 319, 321, 323, 325, 327, 329, 331
+*nset, nset=fixnod_y
+   3,   4,  23,  24,  25,  26,  27,  28,  29,  30,  31,  32,  33, 458, 461, 463
+ 465, 467, 469, 471, 473, 475, 477, 479, 481
+*nset, nset=rnod
+   1
+*nset, nset=tnod
+   4,  34,  35,  36,  37,  38, 334, 359, 384, 409, 434, 459
+*elset, elset=e_load, generate
+   1,  61,  12
+*elset, elset=outele
+   1
+**------------------------------------------------
+*solid section, elset=alle, material=mat1
+ 0.1
+**------------------------------------------------
+*material, name=mat1
+*elastic
+ 206000., 0.3
+**------------------------------------------------
+*orientation, name=hole, system=cylindrical
+ 0., 0., 0.,  0., 0., 1.
+ 1, 0.
+**------------------------------------------------
+*equation
+ 2
+ tnod, 1, 1., rnod, 1, -1.
+**------------------------------------------------
+*boundary
+ fixnod_x, 1
+ fixnod_y, 2
+**------------------------------------------------
+*step
+*static
+ 1., 1.
+**------------------------------------------------
+*dload
+ e_load, p2, 1. 
+**------------------------------------------------
+*output, field, variable=preselect
+*output, history
+*element output, elset=outele
+ s, e
+*node output, nset=rnod
+ u, rf, cf
+*el print, elset=outele
+ s
+ e
+*node print, nset=rnod
+ u
+ rf
+ cf
+*end step
+

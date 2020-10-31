@@ -1,0 +1,57 @@
+*heading
+ e023/case-3
+*preprint, echo=yes, model=yes, history=yes
+**------------------------------------------------
+*include, input=job3.node
+*include, input=job3.elem
+**
+*node, nset=cnod_top
+ 1001, 0., 0., 152.
+*node, nset=cnod_bot
+ 1002, 0., 0., 0.
+**
+*nset, nset=end_top
+ 145
+*nset, nset=end_bot
+ 1
+*elset, elset=outele
+ 1
+**------------------------------------------------
+*beam section, section=circ, elset=alle, material=mat1
+ 4.
+ 0., 1., 0.
+**------------------------------------------------
+*material, name=mat1
+*elastic
+ 213200., 0.3
+**------------------------------------------------
+*boundary
+ cnod_top, 1, 2, 0.
+ cnod_top, 4, 6, 0.
+ cnod_bot, encastre
+**------------------------------------------------
+*mpc
+ beam, end_top, cnod_top
+ beam, end_bot, cnod_bot
+**------------------------------------------------ step-1 --
+*step, nlgeom=yes
+*static, direct
+ 0.1, 1.
+**----------------------------
+*boundary, op=mod
+ cnod_top, 3, 3, -36.
+**----------------------------
+*output, field, variable=preselect
+*output, history
+*element output, elset=outele
+ s, e
+*node output, nset=cnod_top
+ u, rf
+*el print, elset=outele
+ s
+ e
+*node print, nset=cnod_top
+ u
+ rf
+*end step
+

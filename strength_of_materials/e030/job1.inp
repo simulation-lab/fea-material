@@ -1,0 +1,53 @@
+*heading
+ e030/case-1
+*preprint, echo=yes, model=yes, history=yes
+**------------------------------------------------
+*include, input=job1.node
+*include, input=job1.elem
+*nset, nset=fixnod_center
+ 1
+*nset, nset=fixnod_edge
+ 3
+*nset, nset=outnod
+ 1, 3
+*elset, elset=outele
+ 1
+**------------------------------------------------
+*shell section, elset=alle, material=mat1
+ 10.
+**------------------------------------------------
+*material, name=mat1
+*elastic
+ 200000.
+**------------------------------------------------
+*boundary
+ fixnod_center, 1
+ fixnod_edge,   1, 2, 0.
+ fixnod_edge,   6
+**------------------------------------------------ step-1 --
+*step
+*static
+ 1., 1.
+**----------------------------
+*dload
+ alle, p, -0.2
+**----------------------------
+*output, field
+*element output
+ 1, 2, 3
+ s, e
+*node output
+ u, rf, cf
+*output, history
+*element output, elset=outele
+ s, e
+*node output, nset=outnod
+ u, rf, cf
+*el print, elset=outele
+ s, e
+*node print, nset=outnod
+ u
+ rf
+ cf
+*end step
+

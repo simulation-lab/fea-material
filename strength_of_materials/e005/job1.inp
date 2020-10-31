@@ -1,0 +1,74 @@
+*heading
+ e005/case-1
+*preprint, echo=yes, model=yes, history=yes
+**------------------------------------------------
+*node, nset=alln
+  1,0.00000E+00,1.00000E+01
+  2,1.56434E+00,9.87688E+00
+  3,3.09017E+00,9.51057E+00
+  4,4.53990E+00,8.91007E+00
+  5,5.87785E+00,8.09017E+00
+  6,7.07107E+00,7.07107E+00
+  7,8.09017E+00,5.87785E+00
+  8,8.91007E+00,4.53990E+00
+  9,9.51057E+00,3.09017E+00
+ 10,9.87688E+00,1.56434E+00
+ 11,1.00000E+01,0.00000E+00
+*element, type=sax1, elset=alle
+  1, 1, 2
+  2, 2, 3
+  3, 3, 4
+  4, 4, 5
+  5, 5, 6
+  6, 6, 7
+  7, 7, 8
+  8, 8, 9
+  9, 9,10
+ 10,10,11
+**
+*elset, elset=outele
+ 1
+*nset, nset=fixnodx
+ 1
+*nset, nset=fixnody
+ 11
+*nset, nset=outnod
+ 6
+**------------------------------------------------
+*shell section, elset=alle, material=mat1
+ 1.
+**------------------------------------------------
+*material, name=mat1
+*elastic
+ 200000., 0.3
+**------------------------------------------------
+*boundary
+ fixnodx, 1
+ fixnody, 2
+ fixnodx, 6
+ fixnody, 6
+**------------------------------------------------ step-1 --
+*step, nlgeom
+*static
+**----------------------------
+*dload
+ alle, p, 10.
+**----------------------------
+** output requests
+**
+*output, field
+*element output
+ s, e
+*node output
+ u
+*output, history
+*element output, elset=outele
+ s, e
+*node output, nset=outnod
+ u
+*el print, elset=outele
+ s, e
+*node print, nset=alln
+ u
+*end step
+

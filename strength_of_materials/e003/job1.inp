@@ -1,0 +1,63 @@
+*heading
+ e003/case-1 MeshType:1
+*preprint, echo=yes, model=yes, history=yes
+**------------------------------------------------
+*node, nset=alln
+ 1,    0.,  0.
+ 2,  300., 15.
+ 3,  300., 65.
+ 4,    0., 80.
+*element, type=cps4, elset=alle
+ 1,  1, 2, 3, 4
+*nset, nset=fixnodx
+ 1, 4
+*nset, nset=fixnody
+ 1
+*nset, nset=tnod
+ 3
+*nset, nset=rnod
+ 2
+*nset, nset=loadnod
+ rnod
+*elset, elset=outele
+ 1
+**------------------------------------------------
+*solid section, elset=alle, material=mat1
+ 6.
+**------------------------------------------------
+*material, name=mat1
+*elastic
+ 210000., 0.3
+**------------------------------------------------
+*boundary
+ fixnodx, 1
+ fixnody, 2
+**------------------------------------------------
+*equation
+ 2
+ tnod, 1, 1.,  rnod, 1, -1.
+**------------------------------------------------ step-1 --
+*step
+*static
+**----------------------------
+*cload
+ loadnod, 1, 50000.
+**----------------------------
+** output requests
+*output, field
+*element output
+ s, e
+*node output
+ u, rf
+*output, history
+*element output, elset=outele
+ s, e
+*node output, nset=rnod
+ u, rf
+*el print, freq=999, elset=outele
+ s, e
+*node print, freq=999, nset=rnod
+ u
+*node print, freq=999, nset=fixnodx
+ rf
+*end step
